@@ -7,6 +7,7 @@ import (
 
 	"github.com/fiam/gounidecode/unidecode"
 	"github.com/jinzhu/gorm"
+
 	//postgres dialect, required by gorm
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -37,7 +38,7 @@ func GetDB() *gorm.DB {
 
 //AutoMigrate runs gorm auto migration
 func AutoMigrate() {
-	db.AutoMigrate(&User{}, &Page{}, &MenuItem{}, &Category{}, &Product{}, &Image{}, &Setting{}, &Advantage{}, &Order{})
+	db.AutoMigrate(&User{}, &Page{}, &Menu{}, &MenuItem{}, &Category{}, &Product{}, &Image{}, &Setting{}, &Advantage{}, &Order{}, &Slide{})
 }
 
 //truncate truncates string to n runes

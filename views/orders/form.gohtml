@@ -1,15 +1,12 @@
 {{define "orders/form"}}
 {{template "header" .}}
-{{template "navbar" .}}
 
 <div id="one-column">
   <form method="post" class="order-form">
     <h1 class="text-center">{{.Title}}</h1>
     <p class="text-center">Для завершения заказа укажите Ваши контактные данные, необходимые для дальнейшего согласования деталей.</p>
     <fieldset>
-      {{range .Flash}}
-        <div class="alert alert-danger">{{.}}</div>
-      {{end}}
+      {{template "flashes" .}}
       <input type="hidden" name="_csrf" value="{{.Csrf}}">
       
       <div class="form-row form-group">
@@ -37,7 +34,7 @@
           <label class="control-label" for="phone">Контактный телефон</label>
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              <span class="input-group-text"><i class="fa fa-phone"></i></span>
             </div>
             <input id="phone" name="phone" value="{{.Order.Phone}}" class="form-control" required>
           </div>
@@ -48,7 +45,7 @@
           <label class="control-label" for="email">Эл. почта</label>
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-at"></i></span>
+              <span class="input-group-text"><i class="fa fa-at"></i></span>
             </div>
             <input id="email" name="email" value="{{.Order.Email}}" type="email" class="form-control">
           </div>

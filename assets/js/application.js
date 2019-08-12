@@ -8,40 +8,9 @@ import 'bootstrap';
 import 'select2';
 import 'jquery-smooth-scroll';
 import Siema from 'siema';
+import AOS from 'aos';
 
 import '../scss/application.scss'
-
-import fontawesome from "@fortawesome/fontawesome";
-import fasCog from "@fortawesome/fontawesome-free-solid/faCog";
-import fasPencil from "@fortawesome/fontawesome-free-solid/faPencilAlt";
-import fasTags from "@fortawesome/fontawesome-free-solid/faTags";
-import fasCopy from "@fortawesome/fontawesome-free-solid/faCopy";
-import fasUser from "@fortawesome/fontawesome-free-solid/faUser";
-import fasPlay from "@fortawesome/fontawesome-free-solid/faPlay";
-import fasSignOut from "@fortawesome/fontawesome-free-solid/faSignOutAlt";
-import fasEdit from "@fortawesome/fontawesome-free-solid/faEdit";
-import fasTimes from "@fortawesome/fontawesome-free-solid/faTimes";
-import fasSignIn from "@fortawesome/fontawesome-free-solid/faSignInAlt";
-import fasUserPlus from "@fortawesome/fontawesome-free-solid/faUserPlus";
-import fasArchive from "@fortawesome/fontawesome-free-solid/faArchive";
-import fasHome from "@fortawesome/fontawesome-free-solid/faHome";
-import fasEye from "@fortawesome/fontawesome-free-solid/faEye";
-import fasCheck from "@fortawesome/fontawesome-free-solid/faCheck";
-import fasCalendar from "@fortawesome/fontawesome-free-solid/faCalendarAlt";
-import fasChevronUp from "@fortawesome/fontawesome-free-solid/faChevronUp";
-import fasChevronLeft from "@fortawesome/fontawesome-free-solid/faChevronLeft";
-import fasChevronRight from "@fortawesome/fontawesome-free-solid/faChevronRight";
-import fasComments from "@fortawesome/fontawesome-free-solid/faComments";
-import fasExclamationTriangle from "@fortawesome/fontawesome-free-solid/faExclamationTriangle";
-import fasCart from "@fortawesome/fontawesome-free-solid/faShoppingCart";
-import fasSearch from "@fortawesome/fontawesome-free-solid/faSearch";
-import fasPhone from "@fortawesome/fontawesome-free-solid/faPhone";
-import fasEnvelope from "@fortawesome/fontawesome-free-solid/faEnvelope";
-import fasKey from "@fortawesome/fontawesome-free-solid/faKey";
-import fasAt from "@fortawesome/fontawesome-free-solid/faAt";
-import fasEllipsish from "@fortawesome/fontawesome-free-solid/faEllipsisH";
-
-fontawesome.library.add(fasEllipsish, fasChevronLeft, fasChevronUp, fasCog, fasPencil, fasTags, fasComments, fasExclamationTriangle, fasCopy, fasCheck, fasChevronRight, fasCalendar, fasEye, fasUser, fasPlay, fasSignOut, fasEdit, fasTimes, fasSignIn, fasUserPlus, fasArchive, fasHome, fasCart, fasSearch, fasPhone, fasEnvelope, fasKey, fasAt);
 
 $(document).ready(function () {
 
@@ -169,6 +138,12 @@ $(document).ready(function () {
         speed: 400,
         preventDefault: true,
     });
+
+    //animate on scroll
+    AOS.init({
+        duration: 300,
+    });
+
 });
 
 function setDefaultImage() {

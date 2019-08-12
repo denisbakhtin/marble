@@ -5,7 +5,7 @@
 <div id="one-column">
   <h1>{{.Title}}</h1>
   <table class="table">
-    <thead class="thead-grey">
+    <thead>
       <tr>
         <th class="shrink">#</th>
         <th>ФИО</th>
@@ -30,6 +30,10 @@
               <button type="button" class="btn btn-sm btn-outline-danger" onclick="((confirm('Вы уверены?')) ? this.form.submit() : null);">Удалить</button>
             </form>
           </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="6" class="text-center">Список заказов пуст</td>
         </tr>
       {{end}}
     </tbody>

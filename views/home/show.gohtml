@@ -1,8 +1,12 @@
 {{define "home/show"}}
 {{template "header" .}}
-{{template "navbar" .}}
 
-<div id="one-column" class="home">
+{{template "carousel" .}}
+
+{{template "catalog" .}}
+
+<div class="container home" role="main">
+
   <h1>{{.Title}}</h1>
 
   {{if len .Products | lt 0}}

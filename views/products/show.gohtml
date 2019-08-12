@@ -1,6 +1,5 @@
 {{define "products/show"}}
 {{template "header" .}}
-{{template "navbar" .}}
 
 <div id="two-column" class="products-show">
   <div class="row align-items-stretch">
@@ -41,7 +40,7 @@
           <div class="mt-2">
             <form action="/cart/add/{{.Product.ID}}" method="POST">
               <input type="hidden" name="_csrf" value="{{$.Csrf}}">
-              <button type="button" class="btn btn-secondary" onclick="onAddToCart(this)"><i class="fas fa-shopping-cart mr-2"></i> Добавить в корзину</a>
+              <button type="button" class="btn btn-secondary" onclick="onAddToCart(this)"><i class="fa fa-shopping-cart mr-2"></i> Добавить в корзину</a>
             </form>
           </div>
         {{end}}

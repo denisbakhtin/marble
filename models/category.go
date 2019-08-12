@@ -11,6 +11,7 @@ type Category struct {
 
 	Title           string  `form:"title"`
 	Slug            string  `form:"slug"`
+	Excerpt         string  `form: "excerpt"`
 	Description     string  `form:"description"`
 	MetaKeywords    string  `form:"meta_keywords"`
 	MetaDescription string  `form:"meta_description"`

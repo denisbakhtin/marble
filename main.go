@@ -86,72 +86,105 @@ func main() {
 
 	router.POST("/orderconsult", controllers.OrderConsultPost)
 
-	authorized := router.Group("/admin")
-	authorized.Use(controllers.AuthRequired())
+	//admin area
+	admin := router.Group("/admin")
+	admin.Use(controllers.AuthRequired(models.ADMIN))
 	{
-		authorized.GET("/", controllers.AdminGet)
+		admin.POST("/upload", controllers.UploadPost) //image upload
 
-		authorized.POST("/upload", controllers.UploadPost) //image upload
+		admin.GET("/users", controllers.UserIndex)
+		admin.GET("/new_user", controllers.UserNew)
+		admin.POST("/new_user", controllers.UserCreate)
+		admin.GET("/users/:id/edit", controllers.UserEdit)
+		admin.POST("/users/:id/edit", controllers.UserUpdate)
+		admin.POST("/users/:id/delete", controllers.UserDelete)
 
-		authorized.GET("/users", controllers.UserIndex)
-		authorized.GET("/new_user", controllers.UserNew)
-		authorized.POST("/new_user", controllers.UserCreate)
-		authorized.GET("/users/:id/edit", controllers.UserEdit)
-		authorized.POST("/users/:id/edit", controllers.UserUpdate)
-		authorized.POST("/users/:id/delete", controllers.UserDelete)
+		admin.GET("/pages", controllers.PageIndex)
+		admin.GET("/new_page", controllers.PageNew)
+		admin.POST("/new_page", controllers.PageCreate)
+		admin.GET("/pages/:id/edit", controllers.PageEdit)
+		admin.POST("/pages/:id/edit", controllers.PageUpdate)
+		admin.POST("/pages/:id/delete", controllers.PageDelete)
 
-		authorized.GET("/pages", controllers.PageIndex)
-		authorized.GET("/new_page", controllers.PageNew)
-		authorized.POST("/new_page", controllers.PageCreate)
-		authorized.GET("/pages/:id/edit", controllers.PageEdit)
-		authorized.POST("/pages/:id/edit", controllers.PageUpdate)
-		authorized.POST("/pages/:id/delete", controllers.PageDelete)
+		admin.GET("/menus", controllers.MenuIndex)
+		admin.GET("/new_menu", controllers.MenuNew)
+		admin.POST("/new_menu", controllers.MenuCreate)
+		admin.GET("/menu/:id/edit", controllers.MenuEdit)
+		admin.POST("/menu/:id/edit", controllers.MenuUpdate)
+		admin.POST("/menu/:id/delete", controllers.MenuDelete)
 
-		authorized.GET("/menus", controllers.MenuIndex)
-		authorized.GET("/new_menu", controllers.MenuNew)
-		authorized.POST("/new_menu", controllers.MenuCreate)
-		authorized.GET("/menus/:id/edit", controllers.MenuEdit)
-		authorized.POST("/menus/:id/edit", controllers.MenuUpdate)
-		authorized.POST("/menus/:id/delete", controllers.MenuDelete)
+		admin.GET("/menu/:id", controllers.MenuItemIndex)
+		admin.GET("/menu/:id/new_item", controllers.MenuItemNew)
+		admin.POST("/menu/:id/new_item", controllers.MenuItemCreate)
+		admin.GET("/menu/:id/edit/:itemid", controllers.MenuItemEdit)
+		admin.POST("/menu/:id/edit/:itemid", controllers.MenuItemUpdate)
+		admin.POST("/menu/:id/delete/:itemid", controllers.MenuItemDelete)
 
-		authorized.GET("/categories", controllers.CategoryIndex)
-		authorized.GET("/new_category", controllers.CategoryNew)
-		authorized.POST("/new_category", controllers.CategoryCreate)
-		authorized.GET("/categories/:id/edit", controllers.CategoryEdit)
-		authorized.POST("/categories/:id/edit", controllers.CategoryUpdate)
-		authorized.POST("/categories/:id/delete", controllers.CategoryDelete)
+		admin.GET("/categories", controllers.CategoryIndex)
+		admin.GET("/new_category", controllers.CategoryNew)
+		admin.POST("/new_category", controllers.CategoryCreate)
+		admin.GET("/categories/:id/edit", controllers.CategoryEdit)
+		admin.POST("/categories/:id/edit", controllers.CategoryUpdate)
+		admin.POST("/categories/:id/delete", controllers.CategoryDelete)
 
-		authorized.GET("/products", controllers.ProductIndex)
-		authorized.GET("/new_product", controllers.ProductNew)
-		authorized.POST("/new_product", controllers.ProductCreate)
-		authorized.GET("/products/:id/edit", controllers.ProductEdit)
-		authorized.POST("/products/:id/edit", controllers.ProductUpdate)
-		authorized.POST("/products/:id/delete", controllers.ProductDelete)
+		admin.GET("/products", controllers.ProductIndex)
+		admin.GET("/new_product", controllers.ProductNew)
+		admin.POST("/new_product", controllers.ProductCreate)
+		admin.GET("/products/:id/edit", controllers.ProductEdit)
+		admin.POST("/products/:id/edit", controllers.ProductUpdate)
+		admin.POST("/products/:id/delete", controllers.ProductDelete)
 
-		authorized.POST("/new_image", controllers.ImageCreate)
-		authorized.POST("/images/:id/delete", controllers.ImageDelete)
+		admin.POST("/new_image", controllers.ImageCreate)
+		admin.POST("/images/:id/delete", controllers.ImageDelete)
 
-		authorized.GET("/settings", controllers.SettingIndex)
-		authorized.GET("/new_setting", controllers.SettingNew)
-		authorized.POST("/new_setting", controllers.SettingCreate)
-		authorized.GET("/settings/:id/edit", controllers.SettingEdit)
-		authorized.POST("/settings/:id/edit", controllers.SettingUpdate)
-		authorized.POST("/settings/:id/delete", controllers.SettingDelete)
+		admin.GET("/settings", controllers.SettingIndex)
+		admin.GET("/new_setting", controllers.SettingNew)
+		admin.POST("/new_setting", controllers.SettingCreate)
+		admin.GET("/settings/:id/edit", controllers.SettingEdit)
+		admin.POST("/settings/:id/edit", controllers.SettingUpdate)
+		admin.POST("/settings/:id/delete", controllers.SettingDelete)
 
-		authorized.GET("/advantages", controllers.AdvantageIndex)
-		authorized.GET("/new_advantage", controllers.AdvantageNew)
-		authorized.POST("/new_advantage", controllers.AdvantageCreate)
-		authorized.GET("/advantages/:id/edit", controllers.AdvantageEdit)
-		authorized.POST("/advantages/:id/edit", controllers.AdvantageUpdate)
-		authorized.POST("/advantages/:id/delete", controllers.AdvantageDelete)
+		admin.GET("/advantages", controllers.AdvantageIndex)
+		admin.GET("/new_advantage", controllers.AdvantageNew)
+		admin.POST("/new_advantage", controllers.AdvantageCreate)
+		admin.GET("/advantages/:id/edit", controllers.AdvantageEdit)
+		admin.POST("/advantages/:id/edit", controllers.AdvantageUpdate)
+		admin.POST("/advantages/:id/delete", controllers.AdvantageDelete)
 
-		authorized.GET("/orders", controllers.OrderIndex)
-		authorized.GET("/orders/:id", controllers.OrderGet)
-		authorized.POST("/orders/:id/delete", controllers.OrderDelete)
+		admin.GET("/orders", controllers.OrderIndex)
+		admin.GET("/orders/:id", controllers.OrderGet)
+		admin.POST("/orders/:id/delete", controllers.OrderDelete)
+
+		admin.GET("/slides", controllers.SlideIndex)
+		admin.GET("/new_slide", controllers.SlideNew)
+		admin.POST("/new_slide", controllers.SlideCreate)
+		admin.GET("/slides/:id/edit", controllers.SlideEdit)
+		admin.POST("/slides/:id/edit", controllers.SlideUpdate)
+		admin.POST("/slides/:id/delete", controllers.SlideDelete)
+	}
+
+	//manager area
+	manager := router.Group("/manager")
+	manager.Use(controllers.AuthRequired(models.MANAGER))
+	{
+		manager.GET("/orders", controllers.OrderIndex)
+		manager.GET("/orders/:id", controllers.OrderGet)
+		manager.GET("/manage", controllers.ManageGet)
+		manager.POST("/manage", controllers.ManagePost)
+	}
+
+	//member area
+	member := router.Group("/member")
+	member.Use(controllers.AuthRequired(models.MEMBER))
+	{
+		member.GET("/orders", controllers.OrderIndex)
+		member.GET("/orders/:id", controllers.OrderGet)
+		member.GET("/manage", controllers.ManageGet)
+		member.POST("/manage", controllers.ManagePost)
 	}
 
 	// Listen and server on 0.0.0.0:8081
-	router.Run(":8082")
+	router.Run(":8083")
 }
 
 //initLogger initializes logrus logger with some defaults

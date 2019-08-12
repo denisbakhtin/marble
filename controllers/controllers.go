@@ -55,6 +55,7 @@ func getFuncMap() template.FuncMap {
 		"isUserAuthenticated":  isUserAuthenticated,
 		"signUpEnabled":        SignUpEnabled,
 		"noescape":             noescape,
+		"footerMenuItems":      footerMenuItems,
 		"topLevelMenuItems":    topLevelMenuItems,
 		"refEqUint":            refEqUint,
 		"selectableCategories": selectableCategories,
@@ -70,6 +71,13 @@ func getFuncMap() template.FuncMap {
 		"productTitles":        productTitles,
 		"cssVersion":           cssVersion,
 		"jsVersion":            jsVersion,
+		"domain":               domain,
+		"isAdmin":              isAdmin,
+		"isManager":            isManager,
+		"isMember":             isMember,
+		"slides":               homeSlides,
+		"mainMenu":             mainMenu,
+		"panelEntryPoint":      panelEntryPoint,
 	}
 }
 
@@ -115,46 +123,61 @@ func now() time.Time {
 
 //activeUserEmail returns currently authenticated user email
 func activeUserEmail(c *gin.Context) string {
-	if c != nil {
-		u, _ := c.Get("User")
-		if user, ok := u.(*models.User); ok {
-			return user.Email
-		}
+	user := activeUser(c)
+	if user != nil {
+		return user.Email
 	}
 	return ""
 }
 
 //activeUserName returns currently authenticated user name
 func activeUserName(c *gin.Context) string {
-	if c != nil {
-		u, _ := c.Get("User")
-		if user, ok := u.(*models.User); ok {
-			return fmt.Sprintf("%s %s", user.FirstName, user.LastName)
-		}
+	user := activeUser(c)
+	if user != nil {
+		return fmt.Sprintf("%s %s", user.FirstName, user.LastName)
 	}
 	return ""
 }
 
 //activeUserID returns currently authenticated user ID
 func activeUserID(c *gin.Context) uint64 {
-	if c != nil {
-		u, _ := c.Get("User")
-		if user, ok := u.(*models.User); ok {
-			return user.ID
-		}
+	user := activeUser(c)
+	if user != nil {
+		return user.ID
 	}
 	return 0
 }
 
-//isUserAuthenticated returns true is user is authenticated
-func isUserAuthenticated(c *gin.Context) bool {
+//activeUserRole returns currently authenticated user role
+func activeUser(c *gin.Context) *models.User {
 	if c != nil {
 		u, _ := c.Get("User")
-		if _, ok := u.(*models.User); ok {
-			return true
+		if user, ok := u.(*models.User); ok {
+			return user
 		}
 	}
-	return false
+	return nil
+}
+
+//isUserAuthenticated returns true is user is authenticated
+func isUserAuthenticated(c *gin.Context) bool {
+	user := activeUser(c)
+	return user != nil
+}
+
+func isAdmin(c *gin.Context) bool {
+	user := activeUser(c)
+	return user != nil && user.IsAdmin()
+}
+
+func isManager(c *gin.Context) bool {
+	user := activeUser(c)
+	return user != nil && user.IsManager()
+}
+
+func isMember(c *gin.Context) bool {
+	user := activeUser(c)
+	return user != nil && user.IsMember()
 }
 
 //SignUpEnabled returns true if sign up is enabled by config
@@ -172,6 +195,14 @@ func topLevelMenuItems() []models.MenuItem {
 	db := models.GetDB()
 	var menus []models.MenuItem
 	db.Preload("Children").Order("ord asc").Find(&menus, "parent_id is null")
+	return menus
+}
+
+//footer menu items
+func footerMenuItems() []models.MenuItem {
+	db := models.GetDB()
+	var menus []models.MenuItem
+	db.Preload("Children").Where("menu_id = ?", 2).Order("ord asc").Find(&menus, "parent_id is null")
 	return menus
 }
 
@@ -198,14 +229,23 @@ func topLevelCategories() []models.Category {
 	return categories
 }
 
+func mainMenu() []models.MenuItem {
+	db := models.GetDB()
+	var menus []models.MenuItem
+	db.Preload("Children").Where("menu_id = ?", 1).Order("ord asc").Find(&menus, "parent_id is null")
+	return menus
+}
+
 func userRoles() []Option {
-	return []Option{Option{Value: models.MEMBER, Text: "Покупатель"}, Option{Value: models.ADMIN, Text: "Администратор"}}
+	return []Option{Option{Value: models.MEMBER, Text: "Покупатель"}, Option{Value: models.MANAGER, Text: "Менеджер"}, Option{Value: models.ADMIN, Text: "Администратор"}}
 }
 
 func userRole(role string) string {
 	switch role {
 	case models.MEMBER:
 		return "Покупатель"
+	case models.MANAGER:
+		return "Менеджер"
 	case models.ADMIN:
 		return "Администратор"
 	default:
@@ -280,4 +320,46 @@ func fileVersion(path string) string {
 
 func timeToString(t time.Time) string {
 	return fmt.Sprintf("%04d%02d%02d-%02d%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute())
+}
+
+func domain() string {
+	return config.GetConfig().Domain
+}
+
+//panelEntryPoint returns an entry point for authenticated users, same as panelEntryURL but with context
+func panelEntryPoint(c *gin.Context) string {
+	user := activeUser(c)
+	url := "/"
+	if user == nil {
+		return url
+	}
+	switch user.Role {
+	case models.ADMIN:
+		url = "/admin/orders"
+	case models.MANAGER:
+		url = "/manager/orders"
+	default:
+		url = "/"
+	}
+	return url
+}
+
+//panelEntryURL returns an entry point for authenticated users
+func panelEntryURL(user models.User) string {
+	url := "/"
+	switch user.Role {
+	case models.ADMIN:
+		url = "/admin/orders"
+	case models.MANAGER:
+		url = "/manager/orders"
+	default:
+		url = "/"
+	}
+	return url
+}
+
+func homeSlides() []models.Slide {
+	var slides []models.Slide
+	models.GetDB().Order("ord").Find(&slides)
+	return slides
 }

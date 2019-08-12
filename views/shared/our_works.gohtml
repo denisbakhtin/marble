@@ -1,6 +1,5 @@
 {{define "our_works"}}
-
-<div class="divider-wrapper">{{template "hr" .}}</div>
+<div class="container our-works">
     {{$ourWorks := ourWorks}}
     <h5 class="text-center strong">ПОСЛЕДНИЕ РАБОТЫ И ОТЗЫВЫ</h2>
     <div id="our-works-siema-wrapper">
@@ -16,8 +15,9 @@
             {{end}}
         </div>
         <div class="siema-controls">
-            <span class="our-works-prev d-inline-block mr-2"><i class="fas fa-chevron-left"></i></span>
-            <span class="our-works-next d-inline-block"><i class="fas fa-chevron-right"></i></span>
+            <span class="our-works-prev d-inline-block mr-2"><i class="fa fa-chevron-left"></i></span>
+            <span class="our-works-next d-inline-block"><i class="fa fa-chevron-right"></i></span>
         </div>
     </div>
+</div>
 {{end}}

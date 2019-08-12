@@ -6,32 +6,24 @@
   <h1>{{.Title}}</h1>
 
   <table class="table table-hover">
-    <thead class="thead-grey">
+    <thead>
       <tr>
         <th class="shrink">#</th>
         <th>Название</th>
-        <th>Адрес</th>
-        <th>Родительский элемент</th>
-        <th class="shrink">Порядковый номер</th>
+        <th>Код</th>
         <th class="shrink">Действия</th>
       </tr>
     </thead>
     <tbody>
       {{range .Menus}}
-        <tr data-url="/admin/menus/{{.ID}}/edit">
+        <tr data-url="/admin/menu/{{.ID}}">
           <td class="shrink">{{.ID}}</td>
           <td>{{.Title}}</td>
-          <td>{{.URL}}</td>
-          <td>
-            {{if .ParentID}}
-              {{$parent := .GetParent}}
-              {{$parent.ID}}. {{$parent.Title}}
-            {{end}}
-          </td>
-          <td class="shrink">{{.Ord}}</td>
+          <td>{{.Code}}</td>
           <td class="shrink">
-            <a href="/admin/menus/{{.ID}}/edit" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-            <form class="inline-block" action="/admin/menus/{{.ID}}/delete" method="post">
+            <a href="/admin/menu/{{.ID}}" class="btn btn-sm btn-outline-primary">Пункты</a>
+            <a href="/admin/menu/{{.ID}}/edit" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+            <form class="inline-block" action="/admin/menu/{{.ID}}/delete" method="post">
               <input type="hidden" name="_csrf" value="{{$.Csrf}}">
               <button type="button" class="btn btn-sm btn-outline-danger" onclick="((confirm('Вы уверены?')) ? this.form.submit() : null);">Удалить</button>
             </form>
@@ -41,7 +33,7 @@
     </tbody>
   </table>
   <div class="actions">
-    <a href="/admin/new_menu" class="btn btn-secondary">Новый пункт меню</a>
+    <a href="/admin/new_menu" class="btn btn-secondary">Новое меню</a>
   </div>
 </div>
 

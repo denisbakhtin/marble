@@ -5,17 +5,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="{{.MetaDescription}}">
 	<meta name="keywords" content="{{.MetaKeywords}}">
-	<link rel="alternate" type="application/rss+xml" title="Ginblog rss" href="/rss" />
+	<link rel="alternate" type="application/rss+xml" title="Marble rss" href="/rss" />
 	
-	<link rel="apple-touch-icon" sizes="180x180" href="/public/images/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon-16x16.png">
-	<link rel="manifest" href="/public/images/site.webmanifest">
-	<link rel="mask-icon" href="/public/images/safari-pinned-tab.svg" color="#f8f9fe">
-	<link rel="shortcut icon" href="/public/images/favicon.ico">
-	<meta name="msapplication-TileColor" content="#f8f9fe">
-	<meta name="msapplication-config" content="/public/images/browserconfig.xml">
-	<meta name="theme-color" content="#ffffff">
+	{{template "favicon" .}}
 
 	<title>
 		{{if len .Title | lt 0}}
@@ -24,7 +16,9 @@
 			{{getSetting "title_suffix"}}
 		{{end}}
 	</title>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600&amp;subset=cyrillic" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap&subset=cyrillic" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Neucha&display=swap&subset=cyrillic" rel="stylesheet">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css" type="text/css" rel="stylesheet" />
 	<link rel="stylesheet" href="/public/assets/main.css?v={{cssVersion}}">
 </head>

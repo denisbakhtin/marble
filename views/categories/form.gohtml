@@ -7,9 +7,7 @@
 
   <form method="post">
     <fieldset>
-      {{range .Flash}}
-        <div class="alert alert-danger">{{.}}</div>
-      {{end}}
+      {{template "flashes" .}}
       <input type="hidden" name="id" value="{{.Category.ID}}">
       <input type="hidden" name="_csrf" value="{{.Csrf}}">
       
@@ -37,6 +35,11 @@
           <label class="control-label" for="slug">Адрес</label>
           <input id="slug" name="slug" value="{{.Category.Slug}}" class="form-control">
         </div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label" for="excerpt">Короткое описание</label>
+        <input id="excerpt" name="excerpt" value="{{.Category.Excerpt}}" class="form-control" >
       </div>
 
       <div class="form-group">
