@@ -1,0 +1,19 @@
+{{define "about"}}
+    <section class="section section-xl bg-grey section-about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-xl-7" data-aos="fade-right" data-aos-delay="100">
+                <img src="/public/images/marble_table_about.png" alt="О компании" width="670" height="341">
+            </div>
+            <div class="col-lg-6 col-xl-5" data-aos="fade-left" data-aos-delay="100">
+              <h2>{{getSetting "home_about_title"}}</h2>
+              <p class="text-muted">{{getSetting "home_about_text"}}</p>
+              <div class="signature-wrap">
+                <a class="btn btn-primary btn-lg btn-round mr-4" href="{{aboutURL}}"><i class="fa fa-arrow-right"></i></a>
+                <div class="signature">{{getSetting "home_about_signature" | noescape}}</div>
+              </div>
+            </div>
+        </div>
+    </div>
+</section>
+{{end}}

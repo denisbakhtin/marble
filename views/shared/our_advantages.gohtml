@@ -1,15 +1,17 @@
 {{define "our_advantages"}}
-<div class="container advantages">
-    <h3 class="text-center strong">НАШИ ПРЕИМУЩЕСТВА</h3>
-    <div class="row">
-        {{range ourAdvantages}}
-            <div class="col-sm-6 col-md-4 text-center">
-                <h4 class="text-danger strong">{{.Title}}</h4>
-                <div class="description">
-                    {{noescape .Description}}
+<section class="section section-xl bg-white advantages">
+    <div class="container">
+        <h2>Наши преимущества</h2>
+        <div class="row">
+            {{range ourAdvantages}}
+                <div class="col-sm-6 col-md-4 text-center" data-aos="zoom-in" data-aos-delay="100">
+                    <h4 class="text-danger strong">{{.Title}}</h4>
+                    <div class="description">
+                        {{noescape .Description}}
+                    </div>
                 </div>
-            </div>
-        {{end}}
+            {{end}}
+        </div>
     </div>
-</div>
+</section>
 {{end}}

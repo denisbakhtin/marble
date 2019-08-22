@@ -1,32 +1,29 @@
 {{define "search/show"}}
 {{template "header" .}}
 
-<div id="one-column" class="category-show">
-  <h4>{{.Title}}</h4>
+<div id="one-column" class="category-show container">
+  <h4 class="mb-4">{{.Title}}</h4>
   {{if len .Products | lt 0}}
     <div class="row">
-      {{range .Products}}
-        <div class="col-sm-2 product-preview-wrapper position-relative">
-          <a href="{{.URL}}" class="d-block">
-            <div class="card product-preview">
-              <img class="img-fluid card-image-top" src="{{.DefaultImage}}" alt="{{.Title}} фото" />
-              <div class="card-body text-center">
-                {{.Title}}. {{.Code}}
+      {{range $i, $v := .Products}}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+          <div class="card card-body" data-aos="{{if lt $i 4}}fade-left{{else}}fade-right{{end}}" data-aos-delay="100">
+              <div class="figure" style='background: url("{{.DefaultImage}}")'>
               </div>
-            </div>
-          </a>
-          {{if len .Images | lt 0}}
-            <div class="hidden images">
-              {{range $index, $value := .Images}}
-                {{if lt $index 3}}
-                  <img src="{{.URL}}" class="img-fluid" />
-                {{end}}
-              {{end}}
-            </div>
-          {{end}}
+              <h5><a href="{{.URL}}">{{.Title}}</a></h5>
+              <div class="button-wrap">
+                  <a href="{{.URL}}" class="product-btn view-product mr-2"><i class="fa fa-share"></i></a>
+                  <form action="/cart/add/{{.ID}}" method="POST">
+                      <input type="hidden" name="_csrf" value="{{$.Csrf}}">
+                      <button type="button" class="product-btn add-to-cart" onclick="onAddToCart(this)"><i class="fa fa-shopping-cart"></i></button>
+                  </form>
+              </div>
+          </div>
         </div>
       {{end}}
     </div>
+  {{else}}
+    <p>По вашему запросу ничего не найдено.</p>
   {{end}}
 </div>
 

@@ -22,7 +22,7 @@
           <label class="control-label" for="parent_id">Родительский элемент</label>
           <select id="parent_id" name="parent_id" class="form-control">
             <option value="">-</option>
-            {{range topLevelMenuItems}}
+            {{range topLevelMenuItems $.Item.MenuID}}
               {{if refEqUint $.Item.ParentID .ID}}
                 <option value="{{.ID}}" selected>{{.Title}}</option>  
               {{else}}

@@ -22,7 +22,7 @@ type Model struct {
 
 var db *gorm.DB
 
-//SetDB establishes connection to database and saves its handler into db *sqlx.DB
+//SetDB establishes connection to database and saves its handler into db *gorm.DB
 func SetDB(connection string) {
 	var err error
 	db, err = gorm.Open("postgres", connection)

@@ -4,12 +4,14 @@
     <div class="container">
       <div class="header-main">
 
-        <div id="search" class="input-group">
-          <input type="text" name="search" value="" placeholder="Поиск по сайту" class="form-control input-lg">
-          <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+        <form action="/search" method="get" id="search-form" class="d-none d-md-block" autocomplete="off">
+          <div class="input-group autocomplete">
+            <input type="text" name="search" id="search" value="" placeholder="Поиск по сайту" class="form-control input-lg">
+            <div class="input-group-append">
+              <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+            </div>
           </div>
-        </div><!--search-->
+        </form><!--search-form-->
 
         <div class="header-logo">
           <div id="logo">
@@ -22,30 +24,25 @@
         <div class="head-right-bottom">
           <div class="header-cart">
             <div id="cart">
-              <button type="button" data-toggle="dropdown" data-loading-text="Загрузка..." class="btn btn-transparent dropdown-toggle">
+              <a class="btn btn-transparent" href="/cart">
                 <span class="icon-wrapper">
                   <i class="fa fa-shopping-cart"></i> 
-                  <span id="cart-total" class="badge badge-pill badge-dark">0</span>
+                  <span id="cart-total" class="badge badge-pill badge-dark">{{cartLen .Context}}</span>
                 </span>
                 <span class="cart_heading">Корзина</span>
-              </button>
-              <ul class="dropdown-menu pull-right cart-menu" style="">
-                <li>
-                  <p class="text-center">Ваша корзина пуста!</p>
-                </li>
-              </ul>
+              </a>
             </div><!--cart-->
           </div><!--header-cart-->
           <div class="dropdown myaccount">
-            <a href="https://demo.codezeel.com/opencart/OPC04/OPC040096/index.php?route=account/account" title="My Account" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" title="My Account" class="dropdown-toggle" data-toggle="dropdown">
               <span class="fa fa-user"></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-right myaccount-menu" style="">
               {{if isUserAuthenticated .Context}}
                 <li><a href="{{panelEntryPoint .Context}}">Панель управления</a></li>
               {{else}}
-                <li><a href="/signup">Регистрация</a></li>
                 <li><a href="/signin">Вход</a></li>
+                <li><a href="/signup">Регистрация</a></li>
               {{end}}
               
               <li><a href="/cart">Корзина</a></li>
@@ -84,6 +81,7 @@
       </div><!--/.nav-collapse -->
     </div><!-- container -->
   </div> <!-- navbar -->
+  <div class="navbar-bottom-padding"></div>
 </div> <!-- header-container -->
 
 {{end}}

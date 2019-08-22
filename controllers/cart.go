@@ -31,7 +31,7 @@ func CartAdd(c *gin.Context) {
 	cart[id] = true
 	session.Set("cart", cart)
 	session.Save()
-	c.JSON(201, nil)
+	c.JSON(200, len(cart))
 }
 
 //CartProcess handles POST /cart/process route

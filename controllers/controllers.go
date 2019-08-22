@@ -26,6 +26,12 @@ type Option struct {
 	Text  string
 }
 
+//Breadcrumb represents a breadcrumb
+type Breadcrumb struct {
+	URL   string
+	Title string
+}
+
 //DefaultH returns common to all pages template data
 func DefaultH(c *gin.Context) gin.H {
 	return gin.H{
@@ -62,7 +68,6 @@ func getFuncMap() template.FuncMap {
 		"topLevelCategories":   topLevelCategories,
 		"userRoles":            userRoles,
 		"userRole":             userRole,
-		"recommended":          recommended,
 		"getSetting":           getSetting,
 		"ourWorks":             ourWorks,
 		"ourAdvantages":        ourAdvantages,
@@ -78,6 +83,10 @@ func getFuncMap() template.FuncMap {
 		"slides":               homeSlides,
 		"mainMenu":             mainMenu,
 		"panelEntryPoint":      panelEntryPoint,
+		"recommendedProducts":  recommendedProducts,
+		"aboutURL":             aboutURL,
+		"cartLen":              cartLength,
+		"safeURL":              safeURL,
 	}
 }
 
@@ -191,10 +200,10 @@ func noescape(content string) template.HTML {
 }
 
 //top level menu items
-func topLevelMenuItems() []models.MenuItem {
+func topLevelMenuItems(menuID uint64) []models.MenuItem {
 	db := models.GetDB()
 	var menus []models.MenuItem
-	db.Preload("Children").Order("ord asc").Find(&menus, "parent_id is null")
+	db.Preload("Children").Where("parent_id is null and menu_id = ?", menuID).Order("ord asc").Find(&menus)
 	return menus
 }
 
@@ -218,7 +227,7 @@ func refEqUint(ref *uint64, val uint64) bool {
 func selectableCategories() []models.Category {
 	db := models.GetDB()
 	var categories []models.Category
-	db.Where("NOT EXISTS(select 1 from categories as c where c.parent_id = categories.id)").Order("title").Find(&categories)
+	db.Where("NOT EXISTS(select 1 from categories as c where c.parent_id = categories.id)").Order("ord").Find(&categories)
 	return categories
 }
 
@@ -258,13 +267,6 @@ func getSetting(code string) string {
 	setting := models.Setting{}
 	db.Where("code = ?", code).First(&setting)
 	return setting.Value
-}
-
-func recommended() []models.Product {
-	db := models.GetDB()
-	var products []models.Product
-	db.Where("recommended = true and published = true").Find(&products)
-	return products
 }
 
 func ourWorks() []models.Product {
@@ -362,4 +364,50 @@ func homeSlides() []models.Slide {
 	var slides []models.Slide
 	models.GetDB().Order("ord").Find(&slides)
 	return slides
+}
+
+func recommendedProducts() []models.Product {
+	var products []models.Product
+	models.GetDB().
+		Where("published = true and recommended = true and category_id != ?", getSetting("our_works")).
+		Order("id desc").Preload("Images").Limit(8).Find(&products)
+	return products
+}
+
+func aboutURL() string {
+	id := getSetting("about_id")
+	page := models.Page{}
+	models.GetDB().First(&page, id)
+	return page.URL()
+}
+
+func cartLength(c *gin.Context) int {
+	cart := getCart(c)
+	return len(cart)
+}
+
+func categoryBreadcrumbs(c *models.Category) []Breadcrumb {
+	return []Breadcrumb{
+		Breadcrumb{Title: "Главная", URL: "/"},
+		Breadcrumb{Title: c.Title},
+	}
+}
+
+func productBreadcrumbs(p *models.Product) []Breadcrumb {
+	return []Breadcrumb{
+		Breadcrumb{Title: "Главная", URL: "/"},
+		Breadcrumb{Title: p.Category.Title, URL: p.Category.URL()},
+		Breadcrumb{Title: p.Title},
+	}
+}
+
+func pageBreadcrumbs(p *models.Page) []Breadcrumb {
+	return []Breadcrumb{
+		Breadcrumb{Title: "Главная", URL: "/"},
+		Breadcrumb{Title: p.Title},
+	}
+}
+
+func safeURL(url string) template.URL {
+	return template.URL(url)
 }

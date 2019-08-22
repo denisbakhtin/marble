@@ -2,6 +2,7 @@
 {{template "header" .}}
 
 <div id="one-column" class="container page">
+  {{template "breadcrumbs" .}}
   <h1>{{.Title}}</h1>
   <div class="description">
     {{noescape .Page.Description}}
@@ -15,7 +16,6 @@
 </div>
 
 {{template "our_works" .}}
-{{template "our_advantages" .}}
 
 {{template "footer" .}}
 {{end}}

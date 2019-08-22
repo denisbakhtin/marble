@@ -1,8 +1,7 @@
 {{define "cart/show"}}
 {{template "header" .}}
-{{template "navbar" .}}
 
-<div id="one-column">
+<article id="one-column" class="container cart">
   <h1>{{.Title}}</h1>
   {{if len .Products | eq 0}}
     <p class="strong">Ваша корзина пуста</p>
@@ -11,6 +10,7 @@
     <table class="table table-bottom-bordered">
       <thead>
         <tr>
+          <th class="shrink"></th>
           <th>Изделие</th>
           <th class="shrink"></th>
         </tr>
@@ -18,7 +18,8 @@
       <tbody>
         {{range .Products}}
           <tr>
-            <td>{{.Title}}</td>
+            <td class="shrink"><img src="{{.DefaultImage}}" /></td>
+            <td><a href="{{.URL}}">{{.Title}}</a></td>
             <td class="shrink">
               <form action="/cart/delete/{{.ID}}" method="POST">
                 <input type="hidden" name="_csrf" value="{{$.Csrf}}">
@@ -33,9 +34,8 @@
       <a class="btn btn-secondary" href="/new_order">Оформить заказ</a>
     </div>
   {{end}}
-</div>
+</article>
 
-{{template "our_works" .}}
 {{template "our_advantages" .}}
 
 {{template "footer" .}}

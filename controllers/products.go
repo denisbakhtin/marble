@@ -17,7 +17,7 @@ func ProductGet(c *gin.Context) {
 
 	idslug := c.Param("idslug")
 	id := atouint(strings.Split(idslug, "-")[0])
-	db.Preload("Images").First(&product, id)
+	db.Preload("Images").Preload("Category").First(&product, id)
 	if product.ID == 0 || !product.Published {
 		c.HTML(http.StatusNotFound, "errors/404", nil)
 		return
@@ -32,6 +32,7 @@ func ProductGet(c *gin.Context) {
 	h["Title"] = product.Title
 	h["Product"] = product
 	h["DefaultImage"] = product.DefaultImage()
+	h["Breadcrumbs"] = productBreadcrumbs(&product)
 	h["MetaKeywords"] = product.MetaKeywords
 	h["MetaDescription"] = product.MetaDescription
 	h["ShowAddToCart"] = product.CategoryID != atouint64(getSetting("our_works"))
@@ -103,6 +104,7 @@ func ProductEdit(c *gin.Context) {
 func ProductUpdate(c *gin.Context) {
 	product := models.Product{}
 	db := models.GetDB()
+
 	if err := c.ShouldBind(&product); err != nil {
 		session := sessions.Default(c)
 		session.AddFlash(err.Error())
@@ -110,6 +112,7 @@ func ProductUpdate(c *gin.Context) {
 		c.Redirect(http.StatusSeeOther, "/admin/products")
 		return
 	}
+
 	db.Where("id in (?)", product.ImageIds).Find(&product.Images)
 	if err := db.Save(&product).Error; err != nil {
 		c.HTML(http.StatusInternalServerError, "errors/500", nil)

@@ -11,7 +11,7 @@ type Category struct {
 
 	Title           string  `form:"title"`
 	Slug            string  `form:"slug"`
-	Excerpt         string  `form: "excerpt"`
+	Excerpt         string  `form:"excerpt"`
 	Description     string  `form:"description"`
 	MetaKeywords    string  `form:"meta_keywords"`
 	MetaDescription string  `form:"meta_description"`
@@ -23,7 +23,7 @@ type Category struct {
 	Children        []Category `gorm:"foreignkey:ParentID"`
 }
 
-//URL returns article url
+//URL returns category url
 func (c *Category) URL() string {
 	return fmt.Sprintf("/c/%d-%s", c.ID, c.Slug)
 }

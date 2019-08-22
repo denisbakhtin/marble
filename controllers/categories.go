@@ -32,6 +32,7 @@ func CategoryGet(c *gin.Context) {
 	h := DefaultH(c)
 	h["Title"] = category.Title
 	h["Category"] = category
+	h["Breadcrumbs"] = categoryBreadcrumbs(&category)
 	h["MetaKeywords"] = category.MetaKeywords
 	h["MetaDescription"] = category.MetaDescription
 	c.HTML(http.StatusOK, "categories/show", h)
