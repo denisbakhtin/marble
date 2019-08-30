@@ -340,6 +340,8 @@ func panelEntryPoint(c *gin.Context) string {
 		url = "/admin/orders"
 	case models.MANAGER:
 		url = "/manager/orders"
+	case models.MEMBER:
+		url = "/member/orders"
 	default:
 		url = "/"
 	}
@@ -354,6 +356,8 @@ func panelEntryURL(user models.User) string {
 		url = "/admin/orders"
 	case models.MANAGER:
 		url = "/manager/orders"
+	case models.MEMBER:
+		url = "/member/orders"
 	default:
 		url = "/"
 	}

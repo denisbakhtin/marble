@@ -29,7 +29,6 @@ func main() {
 	config.LoadConfig()
 	models.SetDB(config.GetConnectionString())
 	models.AutoMigrate()
-	models.GetDB().Debug()
 
 	//Periodic tasks
 	gocron.Every(1).Day().Do(controllers.CreateXMLSitemap)
@@ -44,7 +43,7 @@ func main() {
 	//setup sessions
 	conf := config.GetConfig()
 	store := memstore.NewStore([]byte(conf.SessionSecret))
-	store.Options(sessions.Options{HttpOnly: true, MaxAge: 7 * 86400}) //Also set Secure: true if using SSL, you should though
+	store.Options(sessions.Options{Path: "/", HttpOnly: true, MaxAge: 7 * 86400}) //Also set Secure: true if using SSL, you should though
 	router.Use(sessions.Sessions("gin-session", store))
 	router.Use(controllers.ContextData())
 
